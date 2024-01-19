@@ -175,7 +175,7 @@ function TaskForm() {
           <Button
             width={"40%"}
             height={"50px"}
-            title={taskId ? "Edit Task" : "Add Task"}
+            title={taskId ? "Update Task" : "Add Task"}
             variant={"primary"}
             onClick={onSubmit}
           />

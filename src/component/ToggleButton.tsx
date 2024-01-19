@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Status } from "../types/task";
 import { ToggleButtonProps } from "../types/ToggleButton";
 
-function ToggleButton({selected, onChange}: ToggleButtonProps) {
+function ToggleButton({selected, onChange, width = '100%', height = '100%', fontSize = '1.2rem'}: ToggleButtonProps) {
   const theme = useSelector((state: rootState) => state.data.theme);
   const [status, setStatus] = useState<Status>(selected);
   const change = () => {
@@ -19,9 +19,9 @@ function ToggleButton({selected, onChange}: ToggleButtonProps) {
     }
   }
   return (
-    <ToggleCon theme={theme}>
+    <ToggleCon theme={theme} width={width} height={height}>
       <div
-        style={{ width: "99%", height: "85%", overflow: 'hidden', backgroundColor: status === 'active' ? '#3498db' : '#2ecc71', borderRadius: '4px', boxShadow: 'inset 0 0 10px 0 rgba(0, 0, 0, 0.3)', display: 'flex', alignItems: 'center', position: 'relative', fontSize: '1.2rem', fontWeight: '600'}}
+        style={{ width: "99%", height: "85%", overflow: 'hidden', backgroundColor: status === 'active' ? '#3498db' : '#2ecc71', borderRadius: '4px', boxShadow: 'inset 0 0 10px 0 rgba(0, 0, 0, 0.3)', display: 'flex', alignItems: 'center', position: 'relative', fontSize: fontSize, fontWeight: '600'}}
       >
         <div style={{width: '50%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'}}>Active</div>
         <div style={{width: '50%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'}}>Completed</div>
@@ -31,9 +31,9 @@ function ToggleButton({selected, onChange}: ToggleButtonProps) {
   );
 }
 
-const ToggleCon = styled.div<{ theme: Theme }>`
-  width: 100%;
-  height: 100%;
+const ToggleCon = styled.div<{ theme: Theme, width: string, height: string }>`
+  width: ${(p) => p.width};
+  height: ${(p) => p.height};
   border: 2px solid gray;
   outline: none;
   background-color: ${(p) => (p.theme === "light" ? "#E5E4E2" : "#333333")};
