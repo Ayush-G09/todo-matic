@@ -1,0 +1,122 @@
+.moon {
+  background-image: url("../assets/moon.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.sun {
+  background-image: url("../assets/sun.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.leftArrow {
+  background-image: url("../assets/left-arrow.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.leftArrowWhite {
+  background-image: url("../assets/left-arrow-white.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.work {
+  background-image: url("../assets/working.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.health {
+  background-image: url("../assets/healthcare.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.learning {
+  background-image: url("../assets/book.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.personal {
+  background-image: url("../assets/man.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.social {
+  background-image: url("../assets/social-media-marketing.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.pen {
+  background-image: url("../assets/pen.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.delete {
+  background-image: url("../assets/delete.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.add {
+  background-image: url("../assets/plus.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.hidescrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hidescrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes open {
+  0% {
+    top: 110%;
+  }
+  10% {
+    display: flex;
+  }
+  100% {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.openDropdown {
+  animation: open 1s;
+  width: 100%;
+  height: auto;
+  top: 110%;
+  display: flex;
+}
+
+@keyframes close {
+  0% {
+    width: 0%;
+    height: 0%;
+  }
+  10% {
+    display: none;
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+.closeDropdown {
+  animation: close 1s;
+  width: 0%;
+  height: 0%;
+  display: none;
+  top: 0%;
+}
