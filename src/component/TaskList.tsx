@@ -3,9 +3,10 @@ import { TaskListProps } from '../types/TaskList';
 import Button from './Button';
 import { Task } from '../types/task';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { darkTheme, lightTheme } from '../styles/themes';
 import { rootState } from '../store/type';
+import { deleteTask } from '../store/slice';
 type State = {
   selected: 'all' | 'active' | 'completed';
   sortedTask: Task[];
@@ -45,12 +46,20 @@ function TaskList({tasks}: TaskListProps) {
   }, [tasks, state.selected]);
   
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const redirect = (path: string) => {
     if(path){
       navigate(path);
     }
   }
+
+  const onDelete = (taskId: string) => {
+    if (taskId) {
+      dispatch(deleteTask(taskId));
+      navigate("/");
+    }
+  };
 
   const theme = useSelector((state: rootState) => state.data.theme);
   
@@ -81,7 +90,7 @@ function TaskList({tasks}: TaskListProps) {
                   </div>
                   <div style={{width: '8%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                     <div style={{width: '1.7rem', height: '1.7rem', cursor: 'pointer'}} className='pen' onClick={() => navigate(`/task/${task.id}`)}/>
-                    <div style={{width: '1.7rem', height: '1.7rem', cursor: 'pointer'}} className='delete'/>
+                    <div style={{width: '1.7rem', height: '1.7rem', cursor: 'pointer'}} className='delete' onClick={() => onDelete(task.id)}/>
                   </div>
                 </div>
             ))}
