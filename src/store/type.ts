@@ -8,5 +8,5 @@ export type AppState = {
 };
 
 export type rootState = {
-    data: AppState;
-}
+  data: AppState;
+};

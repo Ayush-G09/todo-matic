@@ -95,7 +95,7 @@ function TaskForm() {
 
   useEffect(() => {
     if (taskId) {
-      const task = tasks.find((task) => task.id === taskId);
+      const task = tasks.find((task: Task) => task.id === taskId);
       if (task) {
         setState((prev) => ({
           ...prev,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { Component } from "react";
 import { ProgressCardProps } from "../types/ProgressCard";
 import { Task } from "../types/task";
 import {
@@ -29,13 +29,28 @@ type State = {
   uniqueCategories: category[];
 };
 
-function ProgressCard({ tasks }: ProgressCardProps) {
-  const [state, setState] = useState<State>({
-    percentage: 0,
-    todaysTask: [],
-    uniqueCategories: [],
-  });
-  useEffect(() => {
+class ProgressCard extends Component<ProgressCardProps, State> {
+  constructor(props: ProgressCardProps) {
+    super(props);
+    this.state = {
+      percentage: 0,
+      todaysTask: [],
+      uniqueCategories: [],
+    };
+  }
+
+  componentDidMount() {
+    this.calculateProgress();
+  }
+
+  componentDidUpdate(prevProps: ProgressCardProps) {
+    if (prevProps.tasks !== this.props.tasks) {
+      this.calculateProgress();
+    }
+  }
+
+  calculateProgress() {
+    const { tasks } = this.props;
     const targetDate = getCurrentDate();
     const count = tasks.filter(
       (item) => item.date === targetDate && item.status === "completed"
@@ -45,63 +60,64 @@ function ProgressCard({ tasks }: ProgressCardProps) {
     const uniqueCategories = Array.from(
       new Set(todaysTask.map((item) => item.category))
     );
-    setState((prev) => ({
-      ...prev,
+    this.setState({
       percentage: parseFloat(percentage.toFixed(2)),
       todaysTask,
       uniqueCategories,
-    }));
-  }, [tasks]);
-  return (
-    <ProgressCardCon>
-      <Card>
-        <CardHeading>Today's Progress Summary</CardHeading>
-        <Spacer />
-        <InfoCon>
-          <CategoriesCon>
-            {state.todaysTask.length ? (
-              state.uniqueCategories.map((data, index) => (
-                <Categories
-                  key={index}
-                  style={{
-                    left: index === 0 ? 5 : index * 20,
-                  }}
-                >
-                  <CategoriesIcon className={data} />
+    });
+  }
+
+  render() {
+    const { todaysTask, uniqueCategories, percentage } = this.state;
+
+    return (
+      <ProgressCardCon>
+        <Card>
+          <CardHeading>Today's Progress Summary</CardHeading>
+          <Spacer />
+          <InfoCon>
+            <CategoriesCon>
+              {todaysTask.length ? (
+                uniqueCategories.map((data, index) => (
+                  <Categories
+                    key={index}
+                    style={{
+                      left: index === 0 ? 5 : index * 20,
+                    }}
+                  >
+                    <CategoriesIcon className={data} />
+                  </Categories>
+                ))
+              ) : (
+                <CardMessage>You have no task for today!</CardMessage>
+              )}
+              {todaysTask.length && uniqueCategories.length < todaysTask.length ? (
+                <Categories style={{ left: uniqueCategories.length * 20 }}>
+                  +{todaysTask.length - uniqueCategories.length}
                 </Categories>
-              ))
-            ) : (
-              <CardMessage>You have no task for today!</CardMessage>
-            )}
-            {state.todaysTask.length &&
-            state.uniqueCategories.length < state.todaysTask.length ? (
-              <Categories style={{ left: state.uniqueCategories.length * 20 }}>
-                +{state.todaysTask.length - state.uniqueCategories.length}
-              </Categories>
-            ) : null}
-          </CategoriesCon>
-          <ProgressCon>
-            <Progress>
-              <ProgressTitle>Progress</ProgressTitle>
-              {state.todaysTask.length ? (
-                <Percentage>{state.percentage}%</Percentage>
               ) : null}
-            </Progress>
-            <Slider>
-              <SliderBack />
-              <SliderBar
-                style={{
-                  width: state.todaysTask.length
-                    ? `${state.percentage}%`
-                    : "100%",
-                }}
-              />
-            </Slider>
-          </ProgressCon>
-        </InfoCon>
-      </Card>
-    </ProgressCardCon>
-  );
+            </CategoriesCon>
+            <ProgressCon>
+              <Progress>
+                <ProgressTitle>Progress</ProgressTitle>
+                {todaysTask.length ? (
+                  <Percentage>{percentage}%</Percentage>
+                ) : null}
+              </Progress>
+              <Slider>
+                <SliderBack />
+                <SliderBar
+                  style={{
+                    width: todaysTask.length ? `${percentage}%` : "100%",
+                  }}
+                />
+              </Slider>
+            </ProgressCon>
+          </InfoCon>
+        </Card>
+      </ProgressCardCon>
+    );
+  }
 }
 
 export default ProgressCard;
