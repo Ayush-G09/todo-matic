@@ -8,6 +8,24 @@ import { darkTheme, lightTheme } from "../styles/themes";
 import { rootState } from "../store/type";
 import { deleteTask, editTask } from "../store/slice";
 import ToggleButton from "./ToggleButton";
+import {
+  ActionButton,
+  ActionCon,
+  AddButtonCon,
+  CategoryCon,
+  CategoryIcon,
+  EditButton,
+  StatusCon,
+  StatusIndicator,
+  Statust,
+  TaskCard,
+  TaskDate,
+  TaskInfo,
+  TaskInfoCon,
+  TaskInfoTitle,
+  TaskListCon,
+  TaskListHeader,
+} from "../styles/TaskList";
 type State = {
   selected: "all" | "active" | "completed";
   sortedTask: Task[];
@@ -66,35 +84,16 @@ function TaskList({ tasks }: TaskListProps) {
       date: task.date,
       category: task.category,
       status: status,
-      id: task.id
+      id: task.id,
     };
     dispatch(editTask({ id: task.id, updatedTask: editedTask }));
-  }
+  };
 
   const theme = useSelector((state: rootState) => state.data.theme);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        marginTop: "30px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          width: "93%",
-          height: "50px",
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "15px",
-          color: "white",
-          fontWeight: 600,
-          gap: "10px",
-        }}
-      >
+    <TaskListCon>
+      <TaskListHeader>
         <Button
           width="5%"
           height="70%"
@@ -119,15 +118,7 @@ function TaskList({ tasks }: TaskListProps) {
           active={state.selected === "completed"}
           onClick={() => OnSelect("completed")}
         />
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "end",
-            height: "100%",
-          }}
-        >
+        <AddButtonCon>
           <Button
             width="5%"
             height="70%"
@@ -136,112 +127,46 @@ function TaskList({ tasks }: TaskListProps) {
             variant={"primary"}
             onClick={() => redirect("/task")}
           />
-        </div>
-      </div>
+        </AddButtonCon>
+      </TaskListHeader>
       {state.sortedTask.map((task, tindex) => (
-        <div
-          key={`${tindex}taskid${task.id}`}
-          style={{
-            color:
-              theme === "light" ? lightTheme.textColor : darkTheme.textColor,
-            width: "93%",
-            height: "70px",
-            borderRadius: "8px",
-            marginBottom: "15px",
-            boxShadow: "0px 0px 7px rgba(0, 0, 0, 0.3)",
-            display: "flex",
-            alignItems: "center",
-            backgroundColor:
-              theme === "light" ? lightTheme.cardColor : darkTheme.cardColor,
-          }}
-        >
-          <div
-            style={{
-              width: "2.5rem",
-              height: "2.5rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#D3D3D3",
-              borderRadius: "8px",
-              marginLeft: "15px",
-            }}
-          >
-            <div
-              style={{ width: "2rem", height: "2rem" }}
-              className={task.category}
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              flex: 1,
-              height: "100%",
-              justifyContent: "center",
-              gap: "5px",
-              marginLeft: "50px",
-            }}
-          >
-            <div style={{ fontSize: "1.5rem", fontWeight: 600 }}>
-              {task.title}
-            </div>
-            <div
-              style={{
-                fontSize: "1rem",
-                fontWeight: 400,
-                display: "flex",
-                alignItems: "center",
-                gap: "20px",
-              }}
-            >
-              <div>{task.date}</div>
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "3px" }}
-              >
-                <div
-                  style={{
-                    width: "0.5rem",
-                    height: "0.5rem",
-                    backgroundColor:
-                      task.status === "active" ? "#3498db" : "#2ecc71",
-                    borderRadius: "50%",
-                  }}
-                />
-                <div>{task.status === "active" ? "Active" : "Completed"}</div>
-              </div>
-            </div>
-          </div>
-          <div
-            style={{
-              width: "20%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-around",
-            }}
-          >
+        <TaskCard key={`${tindex}taskid${task.id}`} theme={theme}>
+          <CategoryCon>
+            <CategoryIcon className={task.category} />
+          </CategoryCon>
+          <TaskInfoCon>
+            <TaskInfoTitle>{task.title}</TaskInfoTitle>
+            <TaskInfo>
+              <TaskDate>{task.date}</TaskDate>
+              <StatusCon>
+                <StatusIndicator status={task.status} />
+                <Statust>
+                  {task.status === "active" ? "Active" : "Completed"}
+                </Statust>
+              </StatusCon>
+            </TaskInfo>
+          </TaskInfoCon>
+          <ActionCon>
             <ToggleButton
               selected={task.status}
               onChange={(value: string) => onUpdate(task, value as Status)}
-              width="50%"
+              width="60%"
               height="50%"
               fontSize="0.8rem"
             />
-            <div
-              style={{ width: "1.7rem", height: "1.7rem", cursor: "pointer" }}
+            <ActionButton
               className="pen"
               onClick={() => navigate(`/task/${task.id}`)}
             />
-            <div
-              style={{ width: "1.7rem", height: "1.7rem", cursor: "pointer" }}
+            <ActionButton
               className="delete"
               onClick={() => onDelete(task.id)}
             />
-          </div>
-        </div>
+          </ActionCon>
+          <EditButton className={theme === 'light' ? "leftArrow" : "leftArrowWhite"} onClick={() => navigate(`/task/${task.id}`)}/>
+        </TaskCard>
       ))}
-    </div>
+    </TaskListCon>
   );
 }
 

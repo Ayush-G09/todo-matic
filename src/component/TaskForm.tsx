@@ -8,6 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { rootState } from "../store/type";
 import { darkTheme, lightTheme } from "../styles/themes";
+import {
+  ButtonCon,
+  ButtonWrapper,
+  ErrorMessage,
+  InvalidTaskCon,
+  InvalidTaskHeading,
+  SuccessMessage,
+  ValidTaskCon,
+} from "../styles/TaskForm";
 
 type State = {
   title: string;
@@ -102,17 +111,7 @@ function TaskForm() {
   }, []);
 
   return state.validTask ? (
-    <div
-      style={{
-        width: "100%",
-        height: "93%",
-        display: "flex",
-        flexDirection: "column",
-        gap: "3%",
-        alignItems: "center",
-        paddingTop: "50px",
-      }}
-    >
+    <ValidTaskCon>
       <FormField
         title="Title"
         type="text"
@@ -148,29 +147,9 @@ function TaskForm() {
           }
         />
       ) : null}
-      <div
-        style={{
-          width: "40%",
-          fontSize: "1.2rem",
-          fontWeight: 500,
-          color: "white",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "10px",
-          marginTop: "30px",
-        }}
+      <ButtonCon
       >
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "20px",
-          }}
+        <ButtonWrapper
         >
           <Button
             width={"40%"}
@@ -188,50 +167,31 @@ function TaskForm() {
               onClick={onDelete}
             />
           ) : null}
-        </div>
+        </ButtonWrapper>
         {state.error ? (
-          <div style={{ fontSize: "1rem", fontWeight: 600, color: "red" }}>
+          <ErrorMessage>
             All fields are required!
-          </div>
+          </ErrorMessage>
         ) : null}
         {state.successMessage !== "" ? (
-          <div
-            style={{ fontSize: "1rem", fontWeight: 600, color: "limegreen" }}
+          <SuccessMessage
           >
             {state.successMessage}
-          </div>
+          </SuccessMessage>
         ) : null}
-      </div>
-    </div>
+      </ButtonCon>
+    </ValidTaskCon>
   ) : (
-    <div
-      style={{
-        width: "100%",
-        height: "93%",
-        display: "flex",
-        flexDirection: "column",
-        gap: "3%",
-        alignItems: "center",
-        fontSize: "1.5rem",
-        fontWeight: "600",
-        color: theme === "light" ? lightTheme.textColor : darkTheme.textColor,
-      }}
-    >
-      <div
-        style={{
-          marginTop: '10%'
-        }}
-      >
-        Invalid Task
-      </div>
+    <InvalidTaskCon>
+      <InvalidTaskHeading>Invalid Task</InvalidTaskHeading>
       <Button
         width={"20%"}
         height={"50px"}
         variant={"error"}
         title="Go Back"
-        onClick={() => navigate('/')}
+        onClick={() => navigate("/")}
       />
-    </div>
+    </InvalidTaskCon>
   );
 }
 

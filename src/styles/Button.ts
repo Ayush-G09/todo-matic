@@ -26,11 +26,16 @@ export const ButtonCon = styled.div<{
 `;
 
 export const ButtonIcon = styled.div`
-  width: 1rem;
-  height: 1rem;
+  width: 0.8em;
+  height: 0.8em;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (min-width: 768px) {
+    width: 1em;
+    height: 1em;
+  }
 `;
 
 export const ButtonTitle = styled.div`
@@ -38,4 +43,9 @@ export const ButtonTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.6em;
+
+  @media (min-width: 768px) {
+    font-size: 0.8em;
+  }
 `;
